@@ -16,6 +16,8 @@
 - [Препроцессинг и обучающий пайплайн](#препроцессинг-и-обучающий-пайплайн)
 - [Модели](#модели)
 - [Эксперименты и отчётность](#эксперименты-и-отчётность)
+- [Быстрая проверка перед пушем](#быстрая-проверка-перед-пушем)
+- [Частые проблемы](#частые-проблемы)
 
 ## Возможности
 
@@ -201,6 +203,20 @@ chmod +x run_realtime.sh
 
 ## Эксперименты и отчётность
 
-Таблицы метрик и отчёты по классификации фиксируются в `notebooks/README.md`.
+Таблицы метрик, картинки и краткий «человеческий» разбор экспериментов лежат в `notebooks/README.md`.
 
-Визуальные материалы складывай в `notebooks/figures/` и подключай в markdown ноутбуков или в `notebooks/README.md`.
+Графики и схемы лежат в `notebooks/figures/` (в репозитории уже есть несколько PNG/JPG для CNN/Mamba: confusion matrix и train curves, плюс схемы архитектур).
+
+## Быстрая проверка перед пушем
+
+```bash
+./venv/bin/python -m py_compile main.py tools/receiver.py tools/watcher.py
+./venv/bin/python main.py simulate data/samples/wifi_data_set_after_preprocessing_person_id_3.csv 10 0
+cmake -S cpp_preprocessor -B cpp_preprocessor/build
+cmake --build cpp_preprocessor/build -j
+```
+
+## Частые проблемы
+
+- Если IDE ругается на `serial`, проверь, что выбран интерпретатор `./venv/bin/python`, и что `pyserial` установлен (`requirements.txt`).
+- Если `receiver` не видит порты, сначала посмотри список устройств: `./venv/bin/python tools/list_ports.py`.
